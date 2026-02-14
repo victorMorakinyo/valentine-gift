@@ -146,6 +146,23 @@ button:hover {
     margin-top: 15px;
     color: #ffe6e6;
 }
+    .floatingClickHeart {
+    position: absolute;
+    font-size: 24px;
+    animation: floatClickHeart 1.5s ease-out forwards;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+@keyframes floatClickHeart {
+    0% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.5) translateY(-80px);
+        opacity: 0;
+}
 </style>
 </head>
 <body>
@@ -268,7 +285,30 @@ window.addEventListener('DOMContentLoaded', function() {
         }, intervalTime);
     });
 });
+    function spawnHeart(event) {
+    const heart = document.createElement('div');
+    heart.className = 'floatingClickHeart';
+    heart.innerText = '💖';
+    
+    // Set initial position where she clicked
+    heart.style.left = event.clientX + 'px';
+    heart.style.top = event.clientY + 'px';
+    
+    document.body.appendChild(heart);
+    
+    // Remove heart after animation ends
+    setTimeout(() => {
+        heart.remove();
+    }, 1500);
+}
+
+// Make hearts appear only on button clicks
+const buttons = document.querySelectorAll('.yes, .no');
+buttons.forEach(btn => {
+    btn.addEventListener('click', spawnHeart);
+});
 </script>
 
 </body>
+
 </html>
