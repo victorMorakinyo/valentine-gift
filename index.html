@@ -4,9 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Will You Be My Valentine?</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&display=swap');
 
+<!-- Open Graph meta tags for link preview -->
+<meta property="og:image" content="valentine-banner.jpg">
+<meta property="og:title" content="Will You Be My Valentine?">
+<meta property="og:description" content="A special Valentine surprise 💖">
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
 body {
     margin: 0;
     font-family: 'Montserrat', sans-serif;
@@ -106,6 +113,207 @@ button:hover {
     border-radius: 20px;
     font-size: 18px;
     line-height: 1.6;
+    max-height: 60vh;
+    overflow-y: auto;
+    margin-bottom: 15px;
+}
+
+.emoji {
+    font-size: 28px;
+}
+
+#herResponse {
+    padding: 12px;
+    width: 80%;
+    border-radius: 20px;
+    border: 2px solid #ffffff;
+    margin-top: 10px;
+    background-color: #ffffff;
+    color: #333333;
+    font-size: 16px;
+    font-weight: 500;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 10;
+}
+
+#herResponse::placeholder {
+    color: #999999;
+    opacity: 1;
+}
+
+#herResponse:focus {
+    outline: none;
+    border: 2px solid #ff4d6d;
+    box-shadow: 0 0 15px rgba(255,77,109,0.6);
+}
+
+#finalMessage {
+    font-size: 16px;
+    margin-top: 15px;
+    color: #ffe6e6;
+}
+
+/* Floating hearts on click */
+.floatingClickHeart {
+    position: absolute;
+    font-size: 24px;
+    animation: floatClickHeart 1.5s ease-out forwards;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+@keyframes floatClickHeart {
+    0% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.5) translateY(-80px);
+        opacity: 0;
+    }
+}
+</style>
+</head>
+<body>
+
+<!-- Click-to-start music overlay -->
+<div id="musicOverlay">🎵 Tap anywhere to start the romantic music!</div>
+
+<!-- Background Music -->
+<audio id="bgMusic" loop>
+    <source src="romantic1.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Floating hearts -->
+<div class="heart" style="left:10%; animation-duration:6s;">❤️</div>
+<div class="heart" style="left:30%; animation-duration:4s;">💖</div>
+<div class="heart" style="left:50%; animation-duration:5s;">💕</div>
+<div class="heart" style="left:70%; animation-duration:7s;">💘</div>
+<div class="heart" style="left:85%; animation-duration:6s;">💞</div>
+
+<!-- Hugging couple stickers -->
+<div class="hug" style="left:20%; animation-duration:12s;">👩‍❤️‍👨</div>
+<div class="hug" style="left:60%; animation-duration:10s;">💑</div>
+<div class="hug" style="left:40%; animation-duration:14s;">👩‍❤️‍👨</div>
+
+<div class="container">
+
+    <!-- Page 1 -->
+    <div id="page1">
+        <h1>Hi Ella 😘</h1>
+        <p>Before you continue, I have a very important question for you my love,...</p>
+        <button class="yes" onclick="nextPage()">Continue ❤️</button>
+    </div>
+
+    <!-- Page 2 -->
+    <div id="page2" class="hidden">
+        <h1>Will You Be My Valentine? 🌹</h1>
+        <button class="yes" onclick="showLetter()">Yes, of course! 💖</button>
+        <button class="no" onclick="moveButton(this)">No 😅</button>
+        <p style="margin-top:10px;">(Try to click "No" if you dare 😏)</p>
+    </div>
+
+    <!-- Love Letter -->
+    <div id="letterPage" class="hidden">
+        <div class="letter">
+            <h2>To My Dearest Pelumi 💌</h2>
+            <p>Every moment with you feels like a dream I never want to wake from. From your laugh that makes my heart skip a beat, to your smile that lights up the darkest days, you’ve filled my life with warmth, joy, and an endless kind of love I didn’t know was possible.🥰💕</p>
+            <p>I love how even in the quiet moments, just being near you makes everything right. Your presence is my safe place, your voice is my favorite song, and your heart… oh, your heart is the most beautiful home I’ve ever known. 💖</p>
+            <p>You are my sunshine on gloomy days, my comfort when the world feels heavy, and my greatest adventure in life. Every glance, every gentle touch, every shared laugh reminds me that loving you is the most natural, most wonderful thing I’ll ever do. 💜💜💜 </p>
+            <p>Ella, my Sweetheart,...I choose you today, tomorrow, and every day after that. No words could ever capture the depth of my feelings, but I hope these lines bring even a fraction of my love to your heart. ❤️💞</p>
+            <p>Happy Valentine’s Day to the most precious person in my world. I love you endlessly, completely, and with all that I am. 💑💖💑</p>
+        </div>
+        <button class="yes" onclick="showResponseBox()">I Love You Too 💖</button>
+    </div>
+
+    <!-- Response Box -->
+    <div id="responsePage" class="hidden">
+        <h1>Over To You Babe 😘</h1>
+        <p>Type your heartfelt reply below. I’m excited to read every word 💌:</p>
+        <input type="text" id="herResponse" placeholder="Waiting 🌚🌚...">
+        <br>
+        <button class="yes" onclick="submitResponse()">Send 💌</button>
+        <div id="finalMessage"></div>
+    </div>
+
+</div>
+
+<script>
+function nextPage() {
+    document.getElementById("page1").classList.add("hidden");
+    document.getElementById("page2").classList.remove("hidden");
+}
+
+function showLetter() {
+    document.getElementById("page2").classList.add("hidden");
+    document.getElementById("letterPage").classList.remove("hidden");
+}
+
+function moveButton(button) {
+    button.style.position = "absolute";
+    button.style.top = Math.random() * (window.innerHeight - 50) + "px";
+    button.style.left = Math.random() * (window.innerWidth - 100) + "px";
+    button.style.transform = "rotate(" + (Math.random()*30-15) + "deg)";
+}
+
+function showResponseBox() {
+    document.getElementById("letterPage").classList.add("hidden");
+    document.getElementById("responsePage").classList.remove("hidden");
+}
+
+function submitResponse() {
+    var response = document.getElementById("herResponse").value;
+    if(response.trim() === "") {
+        response = "💖 No words needed, your love says it all!";
+    }
+    window.location.href = "mailto:danielcreativez98@gmail.com?subject=My Valentine Reply&body=" + encodeURIComponent(response);
+    document.getElementById("finalMessage").innerHTML = "Aww! I’m excited to read your message ❤️. It’s on its way to me! 😘";
+}
+
+// Click-to-start music with fade-in
+window.addEventListener('DOMContentLoaded', function() {
+    var overlay = document.getElementById('musicOverlay');
+    var music = document.getElementById('bgMusic');
+    
+    overlay.addEventListener('click', function() {
+        overlay.style.display = 'none';
+        music.volume = 0.0;
+        music.play().catch(()=>{});
+
+        var targetVolume = 0.10; // 10%
+        var fadeDuration = 3000;
+        var fadeStep = 0.01;
+        var intervalTime = fadeDuration * fadeStep / targetVolume;
+        var fadeInterval = setInterval(function() {
+            if (music.volume < targetVolume) {
+                music.volume = Math.min(music.volume + fadeStep, targetVolume);
+            } else {
+                clearInterval(fadeInterval);
+            }
+        }, intervalTime);
+    });
+});
+
+// Floating hearts on button click
+function spawnHeart(event) {
+    const heart = document.createElement('div');
+    heart.className = 'floatingClickHeart';
+    heart.innerText = '💖';
+    heart.style.left = event.clientX + 'px';
+    heart.style.top = event.clientY + 'px';
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 1500);
+}
+
+const buttons = document.querySelectorAll('.yes, .no');
+buttons.forEach(btn => {
+    btn.addEventListener('click', spawnHeart);
+});
+</script>
+
+</body>
+</html>    line-height: 1.6;
     max-height: 60vh;
     overflow-y: auto;
     margin-bottom: 15px;
@@ -310,6 +518,7 @@ buttons.forEach(btn => {
 
 </body>
 </html>
+
 
 
 
